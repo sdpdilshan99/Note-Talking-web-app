@@ -1,0 +1,20 @@
+# Dependencies (මේවා Git එකට දාන්න එපා, ගොඩක් ලොකුයි)
+node_modules/
+
+# Build files (TypeScript compile වුණාම එන JS ෆයිල්)
+dist/
+out/
+build/
+
+# Environment variables (Passwords/Secrets තියෙන නිසා මේක කවදාවත් දාන්න එපා)
+.env
+.env.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS specific files
+.DS_Store
+Thumbs.db
