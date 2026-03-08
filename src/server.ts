@@ -4,6 +4,7 @@ import type { Application, Request, Response } from 'express';
 import cors from 'cors';
 import connectDb from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import noteRoutes from './routes/noteRoutes.js';
 import { authMiddleware } from './middleware/authMiddleware.js';
 
 dotenv.config();
@@ -26,6 +27,7 @@ app.get('/api/test-auth', authMiddleware, (req: any, res: any) => {
 
 //Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/notes', noteRoutes);
 
 connectDb();
 
