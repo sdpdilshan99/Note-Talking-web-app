@@ -4,6 +4,7 @@ import type { Application, Request, Response } from 'express';
 import cors from 'cors';
 import connectDb from './config/db.js';
 import authRoutes from './routes/authRoutes.js';
+import { authMiddleware } from './middleware/authMiddleware.js';
 
 dotenv.config();
 
@@ -17,6 +18,10 @@ app.use(express.urlencoded({ extended: true }));
 //Testinf Route
 app.get('/', (req: Request, res: Response) => {
     res.send('Note App API is running...');
+});
+
+app.get('/api/test-auth', authMiddleware, (req: any, res: any) => {
+  res.json({ message: "You are authorized!", user: req.user });
 });
 
 //Routes

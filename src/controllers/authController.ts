@@ -2,13 +2,25 @@ import jwt from "jsonwebtoken"
 import type {Request, Response} from "express"
 import User from "../models/User.js";
 
-const generateTocken = (id: string) => {
-    return jwt.sign({id}, process.env.JWT_SECRET!, {expiresIn: '30d'});
+const generateToken = (id: string): string => {
+    const secret = process.env.JWT_SECRET;
+
+    return jwt.sign({id}, secret!, {expiresIn: '30d'});
 };
 
 export const registerUser = async (req: Request, res: Response) => {
     try {
         const {name, email, password} = req.body;
+
+        if (!process.env.JWT_SECRET) {
+            console.error("JWT_SECRET is missing!");
+            return res.status(500).json({ message: "Server configuration error" });
+        }
+
+        //Validation
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: "Please enter all fields" });
+        }
 
         //check if user exists
         const userExists = await User.findOne({email});
@@ -25,7 +37,7 @@ export const registerUser = async (req: Request, res: Response) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                token: generateTocken(user._id as string),
+                token: generateToken(user._id as string),
             });
         }
     } catch (error) {
@@ -50,7 +62,7 @@ export const loginUser = async (req: Request, res: Response) => {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
-                token: generateTocken(user._id as string),
+                token: generateToken(user._id as string),
             });
         }else{
             res.status(400).json({message: "Invalid credentials"});
